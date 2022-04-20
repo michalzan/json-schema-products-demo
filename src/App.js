@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import createTheme from "./theme";
+import Form from "@rjsf/material-ui";
+import { ThemeProvider } from "@material-ui/core";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import React from "react";
+import schemas from "./schemas";
 
 function App() {
+  const [selcetedSchema, setSelcetedSchema] = React.useState(schemas[0]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={createTheme()}>
+      <Select
+        value={selcetedSchema}
+        onChange={(event) => setSelcetedSchema(event.target.value)}
+      >
+        {schemas.map((schema) => (
+          <MenuItem key={schema.title} value={schema}>
+            {schema.title}
+          </MenuItem>
+        ))}
+      </Select>
+      <Form
+        schema={selcetedSchema}
+        omitExtraData={true}
+        liveOmit={true}
+        onSubmit={(event) => {
+          console.log(event.formData);
+        }}
+      ></Form>
+    </ThemeProvider>
   );
 }
 
